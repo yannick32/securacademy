@@ -2,6 +2,8 @@ package com.upsilonium.securacademy.student;
 
 import org.springframework.stereotype.Repository;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,15 +13,17 @@ import java.util.List;
  */
 @Repository
 public class StudentRepository<T> implements ObjectRepository<Student> {
-    public final static List<Student> STUDENTS = Arrays.asList(
-            new Student(1L, "Bill Denbrough"),
-            new Student(2L, "Eddie Kaspbrak"),
-            new Student(3L, "Ben Hanscom"),
-            new Student(4L, "Richie Tozier"),
-            new Student(5L, "Stan Uris"),
-            new Student(6L, "Beverly Marsh"),
-            new Student(7L, "Mike Hanlon")
-    );
+    public final static List<Student> STUDENTS = new ArrayList<>() {
+        {
+            add(new Student(1L, "Bill Denbrough"));
+            add(new Student(2L, "Eddie Kaspbrak"));
+            add(new Student(3L, "Ben Hanscom"));
+            add(new Student(4L, "Richie Tozier"));
+            add(new Student(5L, "Stan Uris"));
+            add(new Student(6L, "Beverly Marsh"));
+            add(new Student(7L, "Mike Hanlon"));
+        }
+    };
 
     @Override
     public void save(Student student) {

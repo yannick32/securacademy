@@ -32,7 +32,9 @@ public class ApplicationSecurityConfig{
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests()
+            http
+                    .csrf().disable()
+                    .authorizeRequests()
                     .antMatchers("/", "/index", "/css/*", "/js/*").permitAll()
                     .antMatchers("/api/v1/students/**").hasRole(STUDENT.name())
                     .anyRequest()

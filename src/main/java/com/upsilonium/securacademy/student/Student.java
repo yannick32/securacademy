@@ -1,5 +1,6 @@
 package com.upsilonium.securacademy.student;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -10,8 +11,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class Student {
-    private final Long id;
-    private final String name;
+    private Long id;
+    private String name;
 }
