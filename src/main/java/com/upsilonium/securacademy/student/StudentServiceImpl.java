@@ -2,6 +2,8 @@ package com.upsilonium.securacademy.student;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author Yannick Van Ham
  * created on Sunday, 04/10/2020
@@ -17,5 +19,10 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student findStudentById(Long id) {
         return studentRepository.findById(id);
+    }
+
+    @Override
+    public List<Student> retrieveAll() {
+        return studentRepository.retrieveAll();
     }
 }

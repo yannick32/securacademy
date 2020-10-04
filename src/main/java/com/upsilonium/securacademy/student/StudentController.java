@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @author Yannick Van Ham
  * created on Sunday, 04/10/2020
@@ -21,5 +23,10 @@ public class StudentController {
     @GetMapping("{studentId}")
     public Student getStudent(@PathVariable("studentId") Long studentId){
         return studentService.findStudentById(studentId);
+    }
+
+    @GetMapping("all")
+    public List<Student> getAllStudents(){
+        return studentService.retrieveAll();
     }
 }
