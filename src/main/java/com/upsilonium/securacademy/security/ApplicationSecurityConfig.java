@@ -56,9 +56,16 @@ public class ApplicationSecurityConfig{
                     .roles(ADMIN.name())
                     .build();
 
+            UserDetails karenUser = User.builder()
+                    .username("karen")
+                    .password(passwordEncoder.encode("password"))
+                    .roles(ADMIN_TRAINEE.name())
+                    .build();
+
             return new InMemoryUserDetailsManager(
                     richieUser,
-                    lindaUser
+                    lindaUser,
+                    karenUser
             );
         }
     }
