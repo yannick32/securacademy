@@ -3,6 +3,7 @@ package com.upsilonium.securacademy.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import static com.upsilonium.securacademy.security.UserPermission.*;
 import static com.upsilonium.securacademy.security.UserRole.*;
 
 /**
@@ -37,6 +39,10 @@ public class ApplicationSecurityConfig{
                     .authorizeRequests()
                     .antMatchers("/", "/index", "/css/*", "/js/*").permitAll()
                     .antMatchers("/api/v1/students/**").hasRole(STUDENT.name())
+                    .antMatchers(HttpMethod.GET, "/management/**").hasAnyAuthority(COURSE_READ.getPermission(), STUDENT_READ.getPermission())
+                    .antMatchers(HttpMethod.POST, "/management/**").hasAnyAuthority(COURSE_WRITE.getPermission(), STUDENT_WRITE.getPermission())
+                    .antMatchers(HttpMethod.PUT, "/management/**").hasAnyAuthority(COURSE_WRITE.getPermission(), STUDENT_WRITE.getPermission())
+                    .antMatchers(HttpMethod.DELETE, "/management/**").hasAnyAuthority(COURSE_WRITE.getPermission(), STUDENT_WRITE.getPermission())
                     .anyRequest()
                     .authenticated()
                     .and()
@@ -49,19 +55,22 @@ public class ApplicationSecurityConfig{
             UserDetails richieUser = User.builder()
                     .username("richie")
                     .password(passwordEncoder.encode("password"))
-                    .roles(STUDENT.name())
+//                    .roles(STUDENT.name())
+                    .authorities(STUDENT.getGrantedAuthorities())
                     .build();
 
             UserDetails lindaUser = User.builder()
                     .username("linda")
                     .password(passwordEncoder.encode("password"))
-                    .roles(ADMIN.name())
+//                    .roles(ADMIN.name())
+                    .authorities(ADMIN.getGrantedAuthorities())
                     .build();
 
             UserDetails karenUser = User.builder()
                     .username("karen")
                     .password(passwordEncoder.encode("password"))
-                    .roles(ADMIN_TRAINEE.name())
+//                    .roles(ADMIN_TRAINEE.name())
+                    .authorities(ADMIN_TRAINEE.getGrantedAuthorities())
                     .build();
 
             return new InMemoryUserDetailsManager(
