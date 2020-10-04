@@ -24,9 +24,4 @@ public class StudentController {
     public Student getStudent(@PathVariable("studentId") Long studentId){
         return studentService.findStudentById(studentId);
     }
-
-    @GetMapping("all")
-    public List<Student> getAllStudents(){
-        return studentService.retrieveAll();
-    }
 }

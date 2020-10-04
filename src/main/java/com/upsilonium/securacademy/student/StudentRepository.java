@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Repository
 public class StudentRepository<T> implements ObjectRepository<Student> {
-    public static final List<Student> STUDENTS = Arrays.asList(
+    public final static List<Student> STUDENTS = Arrays.asList(
             new Student(1L, "Bill Denbrough"),
             new Student(2L, "Eddie Kaspbrak"),
             new Student(3L, "Ben Hanscom"),
@@ -44,5 +44,11 @@ public class StudentRepository<T> implements ObjectRepository<Student> {
         Student student = findById(id);
         STUDENTS.removeIf(s -> id.equals(s.getId()));
         return student;
+    }
+
+    public Student update(Long id, Student student) {
+        int indexOfStudentWithId = STUDENTS.indexOf(findById(id));
+        STUDENTS.set(indexOfStudentWithId, student);
+        return findById(id);
     }
 }

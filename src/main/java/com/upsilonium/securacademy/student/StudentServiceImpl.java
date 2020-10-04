@@ -10,9 +10,9 @@ import java.util.List;
  */
 @Service
 public class StudentServiceImpl implements StudentService {
-    private final StudentRepository studentRepository;
+    private final StudentRepository<Student> studentRepository;
 
-    public StudentServiceImpl(StudentRepository studentRepository) {
+    public StudentServiceImpl(StudentRepository<Student> studentRepository) {
         this.studentRepository = studentRepository;
     }
 
@@ -24,5 +24,20 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<Student> retrieveAll() {
         return studentRepository.retrieveAll();
+    }
+
+    @Override
+    public void saveStudent(Student student) {
+        studentRepository.save(student);
+    }
+
+    @Override
+    public void deleteStudent(Long id) {
+        studentRepository.delete(id);
+    }
+
+    @Override
+    public void updateStudent(Long id, Student student) {
+        studentRepository.update(id, student);
     }
 }
