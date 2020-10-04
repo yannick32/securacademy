@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import static com.upsilonium.securacademy.security.UserRole.*;
+
 /**
  * @author Yannick Van Ham
  * created on Sunday, 04/10/2020
@@ -45,11 +47,18 @@ public class ApplicationSecurityConfig{
             UserDetails richieUser = User.builder()
                     .username("richie")
                     .password(passwordEncoder.encode("password"))
-                    .roles("STUDENT")
+                    .roles(STUDENT.name())
+                    .build();
+
+            UserDetails lindaUser = User.builder()
+                    .username("linda")
+                    .password(passwordEncoder.encode("password"))
+                    .roles(ADMIN.name())
                     .build();
 
             return new InMemoryUserDetailsManager(
-                    richieUser
+                    richieUser,
+                    lindaUser
             );
         }
     }
