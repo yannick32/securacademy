@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 /**
@@ -21,6 +22,12 @@ public class ApplicationSecurityConfig{
     @Configuration
     @Profile("basicAuth")
     public class BasicAuthSecurityConfig extends WebSecurityConfigurerAdapter {
+        private final PasswordEncoder passwordEncoder;
+
+        public BasicAuthSecurityConfig(PasswordEncoder passwordEncoder) {
+            this.passwordEncoder = passwordEncoder;
+        }
+
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests()
@@ -37,7 +44,7 @@ public class ApplicationSecurityConfig{
         protected UserDetailsService userDetailsService() {
             UserDetails richieUser = User.builder()
                     .username("richie")
-                    .password("password")
+                    .password(passwordEncoder.encode("password"))
                     .roles("STUDENT")
                     .build();
 
