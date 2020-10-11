@@ -22,7 +22,7 @@ import static com.upsilonium.securacademy.security.UserRole.*;
  * created on Sunday, 04/10/2020
  */
 @EnableWebSecurity
-public class ApplicationSecurityConfig{
+public class ApplicationSecurityConfig {
 
     @Configuration
     @Profile("basicAuth")
@@ -40,10 +40,14 @@ public class ApplicationSecurityConfig{
                     .authorizeRequests()
                     .antMatchers("/", "/index", "/css/*", "/js/*").permitAll()
                     .antMatchers("/api/v1/students/**").hasRole(STUDENT.name())
-                    .antMatchers(HttpMethod.GET, "/management/**").hasAnyAuthority(COURSE_READ.getPermission(), STUDENT_READ.getPermission())
-                    .antMatchers(HttpMethod.POST, "/management/**").hasAnyAuthority(COURSE_WRITE.getPermission(), STUDENT_WRITE.getPermission())
-                    .antMatchers(HttpMethod.PUT, "/management/**").hasAnyAuthority(COURSE_WRITE.getPermission(), STUDENT_WRITE.getPermission())
-                    .antMatchers(HttpMethod.DELETE, "/management/**").hasAnyAuthority(COURSE_WRITE.getPermission(), STUDENT_WRITE.getPermission())
+                    .antMatchers(HttpMethod.GET, "/management/**").hasAnyAuthority(COURSE_READ.getPermission(),
+                    STUDENT_READ.getPermission())
+                    .antMatchers(HttpMethod.POST, "/management/**").hasAnyAuthority(COURSE_WRITE.getPermission(),
+                    STUDENT_WRITE.getPermission())
+                    .antMatchers(HttpMethod.PUT, "/management/**").hasAnyAuthority(COURSE_WRITE.getPermission(),
+                    STUDENT_WRITE.getPermission())
+                    .antMatchers(HttpMethod.DELETE, "/management/**").hasAnyAuthority(COURSE_WRITE.getPermission(),
+                    STUDENT_WRITE.getPermission())
                     .anyRequest()
                     .authenticated()
                     .and()
@@ -98,16 +102,22 @@ public class ApplicationSecurityConfig{
                     .authorizeRequests()
                     .antMatchers("/", "/index", "/css/*", "/js/*", "/favicon/*").permitAll()
                     .antMatchers("/api/v1/students/**").hasRole(STUDENT.name())
-                    .antMatchers(HttpMethod.GET, "/management/**").hasAnyAuthority(COURSE_READ.getPermission(), STUDENT_READ.getPermission())
-                    .antMatchers(HttpMethod.POST, "/management/**").hasAnyAuthority(COURSE_WRITE.getPermission(), STUDENT_WRITE.getPermission())
-                    .antMatchers(HttpMethod.PUT, "/management/**").hasAnyAuthority(COURSE_WRITE.getPermission(), STUDENT_WRITE.getPermission())
-                    .antMatchers(HttpMethod.DELETE, "/management/**").hasAnyAuthority(COURSE_WRITE.getPermission(), STUDENT_WRITE.getPermission())
+                    .antMatchers(HttpMethod.GET, "/management/**").hasAnyAuthority(COURSE_READ.getPermission(),
+                    STUDENT_READ.getPermission())
+                    .antMatchers(HttpMethod.POST, "/management/**").hasAnyAuthority(COURSE_WRITE.getPermission(),
+                    STUDENT_WRITE.getPermission())
+                    .antMatchers(HttpMethod.PUT, "/management/**").hasAnyAuthority(COURSE_WRITE.getPermission(),
+                    STUDENT_WRITE.getPermission())
+                    .antMatchers(HttpMethod.DELETE, "/management/**").hasAnyAuthority(COURSE_WRITE.getPermission(),
+                    STUDENT_WRITE.getPermission())
                     .anyRequest()
                     .authenticated()
                     .and()
                     .formLogin()
                     .loginPage("/login").permitAll()
-                    .defaultSuccessUrl("/courses");
+                    .defaultSuccessUrl("/courses")
+                    .and()
+                    .rememberMe();
         }
 
         @Override

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>SecurAcademy | Login</title>
+    <th:block th:include="fragments/layout :: head-cdn"></th:block>
+    <th:block th:include="fragments/layout :: head-upsilonium"></th:block>
+</head>
+<body>
+<header th:replace="fragments/layout :: header"></header>
+<div class="container-fluid bg-lorem-fullhd">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="card bg-light min-vh-100-navbar">
+                    <div class="card-body mx-auto d-flex align-items-center" style="max-width: 400px">
+                        <div>
+                            <h4 class="card-title mt-3 text-center">Sign in</h4>
+                            <form method="post" action="/login">
+                                <div class="form-group input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                                    </div>
+                                    <input
+                                            class="form-control"
+                                            placeholder="Username"
+                                            type="text"
+                                            autofocus
+                                            required
+                                            name="username"
+                                    />
+                                </div>
+                                <div class="form-group input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                                    </div>
+                                    <input
+                                            id="password"
+                                            class="form-control"
+                                            placeholder="Password"
+                                            type="password"
+                                            required
+                                            name="password"
+                                    />
+                                </div>
+                                <input type="checkbox" id="remember-me" name="remember-me">
+                                <label for="remember-me">Remember me</label>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-block">
+                                        Sign in
+                                    </button>
+                                </div>
+                                <p class="text-center">Don't have an account? <a href="/register">Register</a></p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

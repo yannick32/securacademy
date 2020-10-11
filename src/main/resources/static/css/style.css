@@ -1,0 +1,94 @@
+/* You can add global styles to this file, and also import other style files */
+:root{
+    --navbar-height: 56px;
+}
+
+.btn-twitter {
+    color: white;
+    background-color: #1da1f3;
+}
+
+.btn-facebook {
+    color: white;
+    background-color: #3b5998;
+}
+
+.btn-facebook:hover,
+.btn-facebook:visited,
+.btn-twitter:hover,
+.btn-twitter:visited {
+    color: white;
+}
+
+.brand-logo {
+    font-family: "Arvo", serif;
+}
+
+.min-vh-100-navbar {
+    min-height: calc(100vh - var(--navbar-height));
+}
+
+.bg-lorem-fullhd {
+    /* background-image: url("/assets/img/picsum/01.jpg"); */
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.navbar-dark #navbarSupportedContent .navbar-nav .nav-link {
+    color: rgb(221, 221, 221);
+}
+
+/* // Extra small devices (portrait phones, less than 576px)
+// No media query since this is the default in Bootstrap */
+
+h1.brand-logo {
+    font-size: 6em;
+}
+.bg-lorem-fullhd {
+    background-image: url("https://picsum.photos/576/1080");
+}
+/* // Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+    h1.brand-logo {
+        font-size: 9em;
+    }
+    .bg-lorem-fullhd {
+        background-image: url("https://picsum.photos/768/1080");
+    }
+}
+
+/* // Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    h1.brand-logo {
+        font-size: 11em;
+    }
+    .bg-lorem-fullhd {
+        background-image: url("https://picsum.photos/992/1080");
+    }
+}
+
+/* // Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    h1.brand-logo {
+        font-size: 13em;
+    }
+    .bg-lorem-fullhd {
+        background-image: url("https://picsum.photos/1200/1080");
+    }
+}
+
+/* // Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    h1.brand-logo {
+        font-size: 13em;
+    }
+    .bg-lorem-fullhd {
+        background-image: url("https://picsum.photos/1920/1080");
+    }
+}
+
+@media (min-width: 1200px) {
+    .bg-lorem-fullhd {
+        background-image: url("https://picsum.photos/2560/1440");
+    }
+}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8" >
+    <title>SecurAcademy | Login</title>
+    <th:block th:include="fragments/layout :: head-cdn"></th:block>
+    <th:block th:include="fragments/layout :: head-upsilonium"></th:block>
+</head>
+<body>
+<header th:replace="fragments/layout :: header"></header>
+<div class="container-fluid bg-lorem-fullhd">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="card bg-light min-vh-100-navbar">
+                    <div class="card-body mx-auto d-flex align-items-center" style="max-width: 400px">
+                        <div>
+                            <h4 class="card-title mt-3 text-center">Courses</h4>
+                           <table>
+                               <tr>
+                                   <th>ID</th>
+                                   <th>Name</th>
+                                   <th>Instructor</th>
+                                   <th>Credits</th></tr>
+                           </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
