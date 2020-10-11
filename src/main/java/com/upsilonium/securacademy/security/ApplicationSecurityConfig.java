@@ -96,7 +96,7 @@ public class ApplicationSecurityConfig{
             http
                     .csrf().disable()
                     .authorizeRequests()
-                    .antMatchers("/", "/index", "/css/*", "/js/*").permitAll()
+                    .antMatchers("/", "/index", "/css/*", "/js/*", "/favicon/*").permitAll()
                     .antMatchers("/api/v1/students/**").hasRole(STUDENT.name())
                     .antMatchers(HttpMethod.GET, "/management/**").hasAnyAuthority(COURSE_READ.getPermission(), STUDENT_READ.getPermission())
                     .antMatchers(HttpMethod.POST, "/management/**").hasAnyAuthority(COURSE_WRITE.getPermission(), STUDENT_WRITE.getPermission())
@@ -105,7 +105,9 @@ public class ApplicationSecurityConfig{
                     .anyRequest()
                     .authenticated()
                     .and()
-                    .formLogin();
+                    .formLogin()
+                    .loginPage("/login").permitAll()
+                    .defaultSuccessUrl("/courses");
         }
 
         @Override
