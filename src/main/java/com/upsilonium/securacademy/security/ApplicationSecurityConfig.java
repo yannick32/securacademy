@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import static com.upsilonium.securacademy.security.UserPermission.*;
 import static com.upsilonium.securacademy.security.UserRole.*;
@@ -47,6 +48,64 @@ public class ApplicationSecurityConfig{
                     .authenticated()
                     .and()
                     .httpBasic();
+        }
+
+        @Override
+        @Bean
+        protected UserDetailsService userDetailsService() {
+            UserDetails richieUser = User.builder()
+                    .username("richie")
+                    .password(passwordEncoder.encode("password"))
+//                    .roles(STUDENT.name())
+                    .authorities(STUDENT.getGrantedAuthorities())
+                    .build();
+
+            UserDetails lindaUser = User.builder()
+                    .username("linda")
+                    .password(passwordEncoder.encode("password"))
+//                    .roles(ADMIN.name())
+                    .authorities(ADMIN.getGrantedAuthorities())
+                    .build();
+
+            UserDetails karenUser = User.builder()
+                    .username("karen")
+                    .password(passwordEncoder.encode("password"))
+//                    .roles(ADMIN_TRAINEE.name())
+                    .authorities(ADMIN_TRAINEE.getGrantedAuthorities())
+                    .build();
+
+            return new InMemoryUserDetailsManager(
+                    richieUser,
+                    lindaUser,
+                    karenUser
+            );
+        }
+    }
+
+    @Configuration
+    @Profile("formAuth")
+    public class FormBasedAuthSecurityConfig extends WebSecurityConfigurerAdapter {
+        private final PasswordEncoder passwordEncoder;
+
+        public FormBasedAuthSecurityConfig(PasswordEncoder passwordEncoder) {
+            this.passwordEncoder = passwordEncoder;
+        }
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                    .csrf().disable()
+                    .authorizeRequests()
+                    .antMatchers("/", "/index", "/css/*", "/js/*").permitAll()
+                    .antMatchers("/api/v1/students/**").hasRole(STUDENT.name())
+                    .antMatchers(HttpMethod.GET, "/management/**").hasAnyAuthority(COURSE_READ.getPermission(), STUDENT_READ.getPermission())
+                    .antMatchers(HttpMethod.POST, "/management/**").hasAnyAuthority(COURSE_WRITE.getPermission(), STUDENT_WRITE.getPermission())
+                    .antMatchers(HttpMethod.PUT, "/management/**").hasAnyAuthority(COURSE_WRITE.getPermission(), STUDENT_WRITE.getPermission())
+                    .antMatchers(HttpMethod.DELETE, "/management/**").hasAnyAuthority(COURSE_WRITE.getPermission(), STUDENT_WRITE.getPermission())
+                    .anyRequest()
+                    .authenticated()
+                    .and()
+                    .formLogin();
         }
 
         @Override
