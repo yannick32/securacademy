@@ -1,6 +1,7 @@
 package com.upsilonium.securacademy.security;
 
 import com.upsilonium.securacademy.auth.ApplicationUserService;
+import com.upsilonium.securacademy.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -134,6 +136,86 @@ public class ApplicationSecurityConfig {
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID", "remember-me")
                     .logoutSuccessUrl("/login");
+        }
+
+        @Override
+        @Bean
+        protected UserDetailsService userDetailsService() {
+            UserDetails richieUser = User.builder()
+                    .username("richie")
+                    .password(passwordEncoder.encode("password"))
+//                    .roles(STUDENT.name())
+                    .authorities(STUDENT.getGrantedAuthorities())
+                    .build();
+
+            UserDetails lindaUser = User.builder()
+                    .username("linda")
+                    .password(passwordEncoder.encode("password"))
+//                    .roles(ADMIN.name())
+                    .authorities(ADMIN.getGrantedAuthorities())
+                    .build();
+
+            UserDetails karenUser = User.builder()
+                    .username("karen")
+                    .password(passwordEncoder.encode("password"))
+//                    .roles(ADMIN_TRAINEE.name())
+                    .authorities(ADMIN_TRAINEE.getGrantedAuthorities())
+                    .build();
+
+            return new InMemoryUserDetailsManager(
+                    richieUser,
+                    lindaUser,
+                    karenUser
+            );
+        }
+
+        @Bean
+        public DaoAuthenticationProvider daoAuthenticationProvider(){
+            DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+            provider.setPasswordEncoder(passwordEncoder);
+            provider.setUserDetailsService(applicationUserService);
+            return provider;
+        }
+
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+            auth.authenticationProvider(daoAuthenticationProvider());
+        }
+    }
+
+    @Configuration
+    @Profile("jwtAuth")
+    public class JwtAuthSecurityConfig extends WebSecurityConfigurerAdapter {
+        private final PasswordEncoder passwordEncoder;
+        private final ApplicationUserService applicationUserService;
+
+        public JwtAuthSecurityConfig(PasswordEncoder passwordEncoder,
+                                           ApplicationUserService applicationUserService) {
+            this.passwordEncoder = passwordEncoder;
+            this.applicationUserService = applicationUserService;
+        }
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                    .csrf().disable()
+                    .sessionManagement()
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .and()
+                    .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager()))
+                    .authorizeRequests()
+                    .antMatchers("/", "/index", "/css/*", "/js/*", "/favicon/*").permitAll()
+                    .antMatchers("/api/v1/students/**").hasRole(STUDENT.name())
+                    .antMatchers(HttpMethod.GET, "/management/**").hasAnyAuthority(COURSE_READ.getPermission(),
+                    STUDENT_READ.getPermission())
+                    .antMatchers(HttpMethod.POST, "/management/**").hasAnyAuthority(COURSE_WRITE.getPermission(),
+                    STUDENT_WRITE.getPermission())
+                    .antMatchers(HttpMethod.PUT, "/management/**").hasAnyAuthority(COURSE_WRITE.getPermission(),
+                    STUDENT_WRITE.getPermission())
+                    .antMatchers(HttpMethod.DELETE, "/management/**").hasAnyAuthority(COURSE_WRITE.getPermission(),
+                    STUDENT_WRITE.getPermission())
+                    .anyRequest()
+                    .authenticated();
         }
 
         @Override
