@@ -1,9 +1,12 @@
 package com.upsilonium.securacademy.security;
 
+import com.upsilonium.securacademy.auth.ApplicationUserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -12,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import java.util.concurrent.TimeUnit;
 
@@ -92,9 +94,12 @@ public class ApplicationSecurityConfig {
     @Profile("formAuth")
     public class FormBasedAuthSecurityConfig extends WebSecurityConfigurerAdapter {
         private final PasswordEncoder passwordEncoder;
+        private final ApplicationUserService applicationUserService;
 
-        public FormBasedAuthSecurityConfig(PasswordEncoder passwordEncoder) {
+        public FormBasedAuthSecurityConfig(PasswordEncoder passwordEncoder,
+                                           ApplicationUserService applicationUserService) {
             this.passwordEncoder = passwordEncoder;
+            this.applicationUserService = applicationUserService;
         }
 
         @Override
@@ -160,6 +165,19 @@ public class ApplicationSecurityConfig {
                     lindaUser,
                     karenUser
             );
+        }
+
+        @Bean
+        public DaoAuthenticationProvider daoAuthenticationProvider(){
+            DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+            provider.setPasswordEncoder(passwordEncoder);
+            provider.setUserDetailsService(applicationUserService);
+            return provider;
+        }
+
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+            auth.authenticationProvider(daoAuthenticationProvider());
         }
     }
 
