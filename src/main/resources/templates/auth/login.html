@@ -18,6 +18,9 @@
                     <div class="card-body mx-auto d-flex align-items-center" style="max-width: 400px">
                         <div>
                             <h4 class="card-title mt-3 text-center">Sign in</h4>
+                            <div th:if = "${param.logout}" style="color: #ff0000">
+                                You have been logged out.
+                            </div>
                             <form method="post" action="/login">
                                 <div class="form-group input-group">
                                     <div class="input-group-prepend">

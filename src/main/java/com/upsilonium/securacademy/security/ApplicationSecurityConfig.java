@@ -120,7 +120,15 @@ public class ApplicationSecurityConfig {
                     .defaultSuccessUrl("/courses")
                     .and()
                     .rememberMe()
-                    .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30));
+                    .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30))
+                    .rememberMeParameter("remember-me")
+                    .and()
+                    .logout()
+                    .logoutUrl("/logout")
+                    .clearAuthentication(true)
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID", "remember-me")
+                    .logoutSuccessUrl("/login");
         }
 
         @Override
