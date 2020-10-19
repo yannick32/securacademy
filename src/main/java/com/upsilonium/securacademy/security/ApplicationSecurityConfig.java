@@ -1,6 +1,7 @@
 package com.upsilonium.securacademy.security;
 
 import com.upsilonium.securacademy.auth.ApplicationUserService;
+import com.upsilonium.securacademy.jwt.JwtConfig;
 import com.upsilonium.securacademy.jwt.JwtTokenVerifier;
 import com.upsilonium.securacademy.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import javax.crypto.SecretKey;
 import java.util.concurrent.TimeUnit;
 
 import static com.upsilonium.securacademy.security.UserPermission.*;
@@ -158,11 +160,16 @@ public class ApplicationSecurityConfig {
     public class JwtAuthSecurityConfig extends WebSecurityConfigurerAdapter {
         private final PasswordEncoder passwordEncoder;
         private final ApplicationUserService applicationUserService;
+        private final SecretKey secretKey;
+        private final JwtConfig jwtConfig;
 
         public JwtAuthSecurityConfig(PasswordEncoder passwordEncoder,
-                                           ApplicationUserService applicationUserService) {
+                                     ApplicationUserService applicationUserService, SecretKey secretKey,
+                                     JwtConfig jwtConfig) {
             this.passwordEncoder = passwordEncoder;
             this.applicationUserService = applicationUserService;
+            this.secretKey = secretKey;
+            this.jwtConfig = jwtConfig;
         }
 
         @Override
@@ -172,8 +179,9 @@ public class ApplicationSecurityConfig {
                     .sessionManagement()
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
-                    .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager()))
-                    .addFilterAfter(new JwtTokenVerifier(), JwtUsernameAndPasswordAuthenticationFilter.class)
+                    .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig,
+                            secretKey))
+                    .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class)
                     .authorizeRequests()
                     .antMatchers("/", "/index", "/css/*", "/js/*", "/favicon/*").permitAll()
                     .antMatchers("/api/v1/students/**").hasRole(STUDENT.name())
