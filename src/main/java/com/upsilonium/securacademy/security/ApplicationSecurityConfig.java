@@ -1,6 +1,7 @@
 package com.upsilonium.securacademy.security;
 
 import com.upsilonium.securacademy.auth.ApplicationUserService;
+import com.upsilonium.securacademy.jwt.JwtTokenVerifier;
 import com.upsilonium.securacademy.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -138,37 +139,6 @@ public class ApplicationSecurityConfig {
                     .logoutSuccessUrl("/login");
         }
 
-        @Override
-        @Bean
-        protected UserDetailsService userDetailsService() {
-            UserDetails richieUser = User.builder()
-                    .username("richie")
-                    .password(passwordEncoder.encode("password"))
-//                    .roles(STUDENT.name())
-                    .authorities(STUDENT.getGrantedAuthorities())
-                    .build();
-
-            UserDetails lindaUser = User.builder()
-                    .username("linda")
-                    .password(passwordEncoder.encode("password"))
-//                    .roles(ADMIN.name())
-                    .authorities(ADMIN.getGrantedAuthorities())
-                    .build();
-
-            UserDetails karenUser = User.builder()
-                    .username("karen")
-                    .password(passwordEncoder.encode("password"))
-//                    .roles(ADMIN_TRAINEE.name())
-                    .authorities(ADMIN_TRAINEE.getGrantedAuthorities())
-                    .build();
-
-            return new InMemoryUserDetailsManager(
-                    richieUser,
-                    lindaUser,
-                    karenUser
-            );
-        }
-
         @Bean
         public DaoAuthenticationProvider daoAuthenticationProvider(){
             DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -203,6 +173,7 @@ public class ApplicationSecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                     .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager()))
+                    .addFilterAfter(new JwtTokenVerifier(), JwtUsernameAndPasswordAuthenticationFilter.class)
                     .authorizeRequests()
                     .antMatchers("/", "/index", "/css/*", "/js/*", "/favicon/*").permitAll()
                     .antMatchers("/api/v1/students/**").hasRole(STUDENT.name())
@@ -216,37 +187,6 @@ public class ApplicationSecurityConfig {
                     STUDENT_WRITE.getPermission())
                     .anyRequest()
                     .authenticated();
-        }
-
-        @Override
-        @Bean
-        protected UserDetailsService userDetailsService() {
-            UserDetails richieUser = User.builder()
-                    .username("richie")
-                    .password(passwordEncoder.encode("password"))
-//                    .roles(STUDENT.name())
-                    .authorities(STUDENT.getGrantedAuthorities())
-                    .build();
-
-            UserDetails lindaUser = User.builder()
-                    .username("linda")
-                    .password(passwordEncoder.encode("password"))
-//                    .roles(ADMIN.name())
-                    .authorities(ADMIN.getGrantedAuthorities())
-                    .build();
-
-            UserDetails karenUser = User.builder()
-                    .username("karen")
-                    .password(passwordEncoder.encode("password"))
-//                    .roles(ADMIN_TRAINEE.name())
-                    .authorities(ADMIN_TRAINEE.getGrantedAuthorities())
-                    .build();
-
-            return new InMemoryUserDetailsManager(
-                    richieUser,
-                    lindaUser,
-                    karenUser
-            );
         }
 
         @Bean
