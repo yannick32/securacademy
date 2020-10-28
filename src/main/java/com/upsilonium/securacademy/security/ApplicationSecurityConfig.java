@@ -47,7 +47,7 @@ public class ApplicationSecurityConfig {
             http
                     .csrf().disable()
                     .authorizeRequests()
-                    .antMatchers("/", "/index", "/css/*", "/js/*").permitAll()
+                    .antMatchers("/", "/index", "/css/*", "/js/*", "/favicon/*").permitAll()
                     .antMatchers("/api/v1/students/**").hasRole(STUDENT.name())
                     .antMatchers(HttpMethod.GET, "/management/**").hasAnyAuthority(COURSE_READ.getPermission(),
                     STUDENT_READ.getPermission())
@@ -127,11 +127,12 @@ public class ApplicationSecurityConfig {
                     .and()
                     .formLogin()
                     .loginPage("/login").permitAll()
-                    .defaultSuccessUrl("/courses")
                     .and()
                     .rememberMe()
                     .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30))
                     .rememberMeParameter("remember-me")
+                    .and()
+                    .exceptionHandling().accessDeniedPage("/403")
                     .and()
                     .logout()
                     .logoutUrl("/logout")

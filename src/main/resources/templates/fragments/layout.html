@@ -33,7 +33,7 @@
 <body>
 <header th:fragment="header">
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-        <a class="navbar-brand brand-logo" href="#">SecurAcademy</a>
+        <a class="navbar-brand brand-logo" th:href="@{'/'}">SecurAcademy</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -41,7 +41,19 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-<!--                <li class="navbar-item"><a href="/explore" class="nav-link">Explore</a></li>-->
+                <li class="navbar-item">
+                    <a th:href="@{'/management/courses'}"
+                       class="nav-link"
+                       sec:authorize="hasAuthority('course:read')"
+                    >Courses</a>
+                </li>
+                <li class="navbar-item">
+                    <a
+                            th:href="@{'/management/students'}"
+                            class="nav-link"
+                            sec:authorize="hasAuthority('student:read')"
+                    >Students</a>
+                </li>
 <!--                &lt;!&ndash; <li class="navbar-item"><a href="" class="nav-link">My blog</a></li> &ndash;&gt;-->
 <!--                <a href="/create-post" class="btn btn-primary ml-1"><i class="fas fa-edit"></i> Create post</a>-->
             </ul>
@@ -51,14 +63,14 @@
                         <button
                                 sec:authorize="isAuthenticated()"
                                 type="submit"
-                                class="btn btn-secondary mr-2"><i class="fas fa-sign-out-alt"
+                                class="btn btn-secondary mr-2 navbar-item"><i class="fas fa-sign-out-alt"
                                                                                 ></i>
                             Sign
                             out
                         </button>
                     </form>
                 </div>
-                <div>
+                <div class="text-center">
                     <a
                             sec:authorize="!isAuthenticated()"
                             th:href="@{'/login'}"
@@ -88,18 +100,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
             integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
             crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 </div>
 
 <div th:fragment="js-wow">
-    <!-- WOW -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
-    <script>
-        new WOW().init();
-    </script>
-</div>
-
-<div th:fragment="select2-bootstrap4-theme">
     <!-- WOW -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
     <script>

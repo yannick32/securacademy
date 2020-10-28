@@ -1,5 +1,8 @@
 package com.upsilonium.securacademy.student;
 
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -8,32 +11,17 @@ import java.util.List;
  * @author Yannick Van Ham
  * created on Sunday, 04/10/2020
  */
-@RestController
-@RequestMapping("management/api/v1/students")
+@Controller
+@RequestMapping("management/students")
+@AllArgsConstructor
 public class StudentManagementController {
+    private static final String STUDENTS_VIEW = "students";
     private final StudentService studentService;
 
-    public StudentManagementController(StudentService studentService) {
-        this.studentService = studentService;
-    }
-
     @GetMapping()
-    public List<Student> getAllStudents(){
-        return studentService.retrieveAll();
-    }
-
-    @PostMapping()
-    public void registerNewStudent(@RequestBody Student student){
-        studentService.saveStudent(student);
-    }
-
-    @DeleteMapping("{studentId}")
-    public void deleteStudent(@PathVariable("studentId") Long id){
-        studentService.deleteStudent(id);
-    }
-
-    @PutMapping("{studentId}")
-    public void updateStudent(@PathVariable("studentId") Long id, @RequestBody Student student){
-        studentService.updateStudent(id, student);
+    public String getAllStudents(Model model){
+        List<Student> students = studentService.retrieveAll();
+        model.addAttribute("students", students);
+        return STUDENTS_VIEW;
     }
 }

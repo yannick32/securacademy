@@ -12,16 +12,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 public class TemplateController {
     private static final String LOGIN_VIEW = "auth/login";
-    private static final String COURSES_VIEW = "courses";
+    private static final String INDEX_VIEW = "index";
+    private static final String ERROR_ACCESS_DENIED = "error/403";
+
+    @GetMapping
+    public String getIndexView(){
+        return INDEX_VIEW;
+    }
 
     @GetMapping("login")
     public String getLoginView(){
         return LOGIN_VIEW;
     }
 
-    @GetMapping("courses")
-    public String getCoursesView(){
-        return COURSES_VIEW;
+    @RequestMapping("/403")
+    public String accessDenied(){
+        return ERROR_ACCESS_DENIED;
     }
 
 

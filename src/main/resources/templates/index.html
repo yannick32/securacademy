@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>SecurAcademy</title>
+    <th:block th:include="fragments/layout :: head-cdn"></th:block>
+    <th:block th:include="fragments/layout :: head-upsilonium"></th:block>
+</head>
+<body>
+<header th:replace="fragments/layout :: header"></header>
+<div class="container-fluid bg-lorem-fullhd">
+    <div class="container min-vh-100-navbar d-flex d-sm-block align-items-center" id="main-container">
+        <div class="mx-auto" style="max-width: 600px">
+            <div class="row">
+                <div class="col py-5">
+                    <h2 class="text-center">Welcome to SecurAcademy</h2>
+                    <p>A simple student/course management API used to demonstrate Spring Security as
+                        follows:</p>
+                    <ul>
+                        <li>Different authentication methods
+                            <ul>
+                                <li>HTTP Basic</li>
+                                <li>Form-based</li>
+                                <li>JSON Web Token (JWT)</li>
+                            </ul>
+                        </li>
+                        <li>Permission vs Role-based authorization</li>
+                        <li>'Remember me' tokens</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row text-center mt-5"
+                 sec:authorize="!isAuthenticated()">
+                <div class="col"><p>Sign in to get started:</p>
+                    <a
+                            th:href="@{'/login'}"
+                            class="btn btn-primary">Sign in</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:include="fragments/layout :: js-bootstrap"></th:block>
+</body>
+</html>

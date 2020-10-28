@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Courses</title>
+    <title>Students</title>
     <th:block th:include="fragments/layout :: head-cdn"></th:block>
     <th:block th:include="fragments/layout :: head-upsilonium"></th:block>
 </head>
@@ -14,22 +14,18 @@
     <div class="container min-vh-100-navbar" id="main-container">
         <div class="row">
             <div class="col py-5">
-                <h4 class="text-center">Courses</h4>
+                <h4 class="text-center">Students</h4>
                 <table class="table">
                     <thead>
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Instructor</th>
-                        <th scope="col">Credits</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="course : ${courses}">
-                        <th scope="row" th:text="${course.id}">1</th>
-                        <td th:text="${course.name}">Java EE</td>
-                        <td th:text="${course.instructor}">Nick Bauters</td>
-                        <td th:text="${course.credits}">10</td>
+                    <tr th:each="student : ${students}">
+                        <th scope="row" th:text="${student.id}">1</th>
+                        <td th:text="${student.name}">Richie Tozier</td>
                     </tr>
                     </tbody>
                 </table>

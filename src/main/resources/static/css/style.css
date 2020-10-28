@@ -38,6 +38,12 @@
     color: rgb(221, 221, 221);
 }
 
+#main-container {
+    background-color: #F8F9FA;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+}
+
 /* // Extra small devices (portrait phones, less than 576px)
 // No media query since this is the default in Bootstrap */
 
