@@ -1,6 +1,7 @@
 package com.upsilonium.securacademy.auth;
 
 import com.google.common.collect.Lists;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +15,7 @@ import static com.upsilonium.securacademy.security.UserRole.*;
  * created on Monday, 19/10/2020
  */
 @Repository("fake")
+@Profile({"formAuth", "jwtAuth"})
 public class FakeApplicationUserDaoService implements ApplicationUserDao {
     private final PasswordEncoder passwordEncoder;
 

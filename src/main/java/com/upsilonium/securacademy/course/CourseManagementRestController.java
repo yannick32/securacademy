@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author Yannick Van Ham
  * created on Sunday, 04/10/2020
@@ -13,11 +15,10 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class CourseManagementRestController {
     private final CourseService courseService;
-    private static final String COURSES_VIEW = "courses";
 
     @GetMapping
-    public String getAllCourses(){
-        return COURSES_VIEW;
+    public List<Course> getAllCourses(){
+        return courseService.retrieveAll();
     }
 
     @PostMapping

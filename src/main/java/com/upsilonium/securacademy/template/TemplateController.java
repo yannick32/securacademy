@@ -1,5 +1,6 @@
 package com.upsilonium.securacademy.template;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,17 +17,18 @@ public class TemplateController {
     private static final String ERROR_ACCESS_DENIED = "error/403";
 
     @GetMapping
-    public String getIndexView(){
+    public String getIndexView() {
         return INDEX_VIEW;
     }
 
     @GetMapping("login")
-    public String getLoginView(){
+    @Profile({"formAuth", "jwtAuth"})
+    public String getLoginView() {
         return LOGIN_VIEW;
     }
 
     @RequestMapping("/403")
-    public String accessDenied(){
+    public String accessDenied() {
         return ERROR_ACCESS_DENIED;
     }
 

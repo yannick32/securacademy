@@ -1,6 +1,7 @@
 package com.upsilonium.securacademy.auth;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
  * created on Monday, 19/10/2020
  */
 @Service
+@Profile({"formAuth", "jwtAuth"})
 public class ApplicationUserService implements UserDetailsService {
 
     private final ApplicationUserDao applicationUserDao;
